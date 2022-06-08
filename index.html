@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 20px;
+            box-sizing: border-box;
+        }
+        body {
+            background-image: url("https://cdn.pixabay.com/photo/2018/12/09/09/15/christmas-3864552_1280.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+        }
+        .container {
+            width: 650px;
+            height: 570px;
+            margin: 20px auto;
+            text-align: center;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        p {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 28px;
+        }
+        input {
+            height: 40px;
+            width: 620px;
+            outline: none;
+            border-radius: 10px;
+            padding: 0 10px;
+            margin: 8px;
+            border: 1px solid black;
+        }
+        textarea {
+            width: 620px;
+            height: 120px;
+            border-radius: 10px;
+            padding: 5px 10px;
+            margin: 8px;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus{
+            outline: none;
+            border: 2px solid #ed2939;
+            box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5),
+                        inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        #submit {
+            width: 150px;
+            height: 40px;
+            position: relative;
+            margin-bottom: 25px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+            box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.2);
+            color: #6f6cde;
+        }
+        #submit:active {
+            opacity: 1;
+            box-shadow: inset 8px 8px 16px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <form id="formData" class="container" method="post" autocomplete="off">
+        <p>Contact Us</p>
+        <input type="text" id="username" name="username" placeholder="Name"><br><br>
+        <input type="email" id="email" name="email" placeholder="Email"><br><br>
+        <input type="text" id="phone" name="phone" placeholder="Phone"><br><br>
+        <textarea form="formData" name="comment"  placeholder="Comments"></textarea>
+        <input type="submit" name="submit" formaction="/update_data" id="submit" value="Submit">
+    </form>
+
+    <script type="text/javascript">
+        window.onload = getData;
+
+        function getData() {
+
+            let address = '/get_data';
+
+            let request = new XMLHttpRequest();
+            request.addEventListener("load", getRequest);
+
+            function getRequest() {
+                let response = JSON.parse(request.responseText);
+                let username = document.getElementsByName("username")[0];
+                let email = document.getElementsByName("email")[0];
+                let phone = document.getElementsByName("phone")[0];
+                let comment = document.getElementsByName("comment")[0];
+
+                username.value = response.username;
+                email.value = response.email;
+                phone.value = response.phone;
+                comment.value = response.comment;
+            };
+
+            request.open("GET", address, true);
+            request.send();
+        };
+    </script>
+</body>
+</html>
